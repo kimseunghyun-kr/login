@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import java.util.UUID;
 
@@ -82,7 +83,31 @@ public class LogInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
 
         String uuid = UUID.randomUUID().toString();
+
+//        takes the position of the set_id, Session_const for loginFilter
+//        able to be represented as a regional variable for servlet but due to the
+//        nature of prehandle, posthandle and aftercompletion occuring at different instances,
+//        need a separate container to user the values designated in prehandle
+//        in posthandle and aftercompletion
+
+//        LogInterceptor is used like a singleton object, so keeping member variables can lead to potential unwanted
+//        side effects, thus it is kept in request which would largely be unmutated.
+//        this value is used in afterCompletion as request.getAttribute(LOG_ID)
         request.setAttribute(LOG_ID, uuid);
+
+
+//        handlermethod contains all information of teh controller method that is to be called
+//        handler information differs according to which handler mapping is being used.
+//        with spring, usually, @Controller or @RequestMapping is used as the handler mapping,
+//        for this instance, HandlerMethod is passed over as the handler information.
+
+//        should a static resource be called, instead of @Controller,
+//        ResourceHttpRequestHandler is passed over as the Handler information so
+//        there needs to be a different code to handle the different classes(types) that aare being passed over
+
+//        the reason for calling the completion log at afterCompletion and not postHandle
+//        is due to postHandle not being called should an exception occurs. AfterCompletion guarantees
+//        the log being called (behaves like finally)
 
         if(handler instanceof HandlerMethod) {
             HandlerMethod hm = (HandlerMethod) handler;
@@ -106,4 +131,17 @@ public class LogInterceptor implements HandlerInterceptor {
             log.error("afterCompletion error!! ", ex);
         }
     }
+
+//    log provided by the LoginInterceptor
+
+//    REQUEST [6234a913-f24f-461f-a9e1-85f153b3c8b2][/members/add]
+//    [hello.login.web.member.MemberController#addForm(Member)]
+//    postHandle [ModelAndView [view="members/addMemberForm";
+//    model={member=Member(id=null, loginId=null, name=null, password=null),
+//    org.springframework.validation.BindingResult.member=org.springframework.validation.BeanPropertyBindingResult: 0 errors}]]
+//    RESPONSE [6234a913-f24f-461f-a9e1-85f153b3c8b2][/members/add]
+
+//    URL PATH PATTERN supported by SPRING
+
+//    https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/util/pattern/PathPattern.html
 }

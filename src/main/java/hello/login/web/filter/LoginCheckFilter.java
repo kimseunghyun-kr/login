@@ -15,7 +15,7 @@ import java.io.IOException;
 @Slf4j
 public class LoginCheckFilter implements Filter {
 
-    private static final String[] whiteList = {"/", "members/add", "/login", "/logout", "/css/*"};
+    private static final String[] whitelist = {"/", "/members/add", "/login", "/logout", "/css/*"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -52,6 +52,6 @@ public class LoginCheckFilter implements Filter {
 
     private boolean isLoginCheckPath(String requestURI) {
 //        patternMatchUtils provided by spring to match a string to a String array of given patterns
-        return !PatternMatchUtils.simpleMatch(whiteList, requestURI);
+        return !PatternMatchUtils.simpleMatch(whitelist, requestURI);
     }
 }
