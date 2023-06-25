@@ -18,19 +18,36 @@ public class HomeController {
         return "home";
     }
 
+//    @GetMapping("/")
+//    public String homeLogin(@CookieValue(name = "memberId", required = false) Long memberId, Model model){
+//        if(memberId == null) {
+//            return "home";
+//        }
+//
+//        Member loginMember = memberRepository.findById(memberId);
+//        if(loginMember == null){
+//            return "home";
+//        }
+//
+//        model.addAttribute("member", loginMember);
+//        return "loginHome";
+//
+//    }
+
+
     @GetMapping("/")
-    public String homeLogin(@CookieValue(name = "memberId", required = false) Long memberId, Model model){
-        if(memberId == null) {
+    public String homeLogin(
+            @CookieValue(name = "memberId", required = false) Long memberId,
+            Model model) {
+        if (memberId == null) {
             return "home";
         }
-
+        //로그인
         Member loginMember = memberRepository.findById(memberId);
-        if(loginMember == null){
+        if (loginMember == null) {
             return "home";
         }
-
         model.addAttribute("member", loginMember);
         return "loginHome";
-
     }
 }
