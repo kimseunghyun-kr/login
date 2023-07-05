@@ -15,6 +15,8 @@ import java.io.IOException;
 @Slf4j
 public class LoginCheckFilter implements Filter {
 
+//    init and destroy are default methods
+
     private static final String[] whitelist = {"/", "/members/add", "/login", "/logout", "/css/*"};
 
     @Override
@@ -44,7 +46,7 @@ public class LoginCheckFilter implements Filter {
 //            is logged in if code reaches this point
             chain.doFilter(request, response);
         } catch(Exception e) {
-            throw e; //able to log the exception, but the exception needs to reach TOMCAT WAS
+            throw e; //able to log the exception, but the exception needs to reach TOMCAT WAS to give an error page
         } finally {
             log.info("finished login validation filter {}", requestURI);
         }

@@ -19,8 +19,8 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
 //    setFilter(new LogFilter()) : set the filter to register
-//setOrder(1) : set the priority of the filter within the filter chain. the lower the number the greater the priority order
-//addUrlPatterns("/*") : designate the url pattern where the filter will be called. Can designate many url patterns at once
+//    setOrder(1) : set the priority of the filter within the filter chain. the lower the number the greater the priority order
+//    addUrlPatterns("/*") : designate the url pattern where the filter will be called. Can designate many url patterns at once -> "*/" means all
 //    search servlet URL pattern to search about the URL pattern rule
 //    @ServletComponentScan and @Webfilter(filterName = "logFilter", urlPatterns = "/*")
 //    also allows for the registration of filters but is unable to control the priority order of the filter

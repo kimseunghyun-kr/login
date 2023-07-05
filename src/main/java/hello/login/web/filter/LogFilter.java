@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 //Filter interface is provided by java servlet.
-// any classes that implements the Filter interface will be auto detected
+// any classes that implements the Filter interface will be auto-detected
 //by servlet.
 //servlet calls Filter before it calls itself
 //with the following chain of command
@@ -23,6 +23,9 @@ import java.util.UUID;
 // FilterChain chain) throws IOException, ServletException;
 // public default void destroy() {}
 //}
+
+//generally used to see what kind of requests client has made
+//transaction IDs, time taken for transaction, etc.
 
 @Slf4j
 public class LogFilter implements Filter {
@@ -43,10 +46,10 @@ public class LogFilter implements Filter {
         String uuid = UUID.randomUUID().toString();
         try {
             log.info("REQUEST [{}][{}]", uuid, requestURI);
-//            this is the most important call as it allows the next chain to be called should there be remaining filters to be called
+//            this is the most important call as it allows the next chain to be called should there be remaining filters to be called,
 //            or it calls the servlet should there be none
-//            given that the signature of this method is void, without this line, unable to proceed to either
-//            the next filter or the servlet call
+//            given that the signature of this method is void, without this line, it would be impossible to proceed to either
+//            the next filter or servlet call
             chain.doFilter(request, response);
         } catch (Exception e) {
             throw e;
